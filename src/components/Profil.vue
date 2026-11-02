@@ -1,117 +1,56 @@
 <script setup>
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { onMounted, onUnmounted } from "vue";
-
-gsap.registerPlugin(ScrollTrigger);
-
-let ctx;
-
-const animateFrom = (elem, direction) => {
-  direction = direction || 1;
-  var x = 0,
-    y= 100;
-
-  elem.style.transform = "translate(" + x + "px, " + y + "px)";
-  elem.style.opacity = "0";
-  gsap.fromTo(
-    elem,
-    { x: x, y: y, autoAlpha: 0 },
-    {
-      duration: 1.25,
-      x: 0,
-      y: 0,
-      autoAlpha: 1,
-      ease: "expo",
-      overwrite: "auto",
-    }
-  );
-};
-
-const hide = (elem) => {
-  gsap.set(elem, { autoAlpha: 0 });
-};
-
-onMounted(() => {
-  ctx = gsap.context(() => {
-
-    gsap.utils.toArray(".box").forEach(function(elem) {
-			if(elem.getBoundingClientRect()?.top > 0){
-				hide(elem); // assure that the element is hidden when scrolled into view
-		  
-				ScrollTrigger.create({
-				  trigger: elem,
-				  once: true,
-				  start: "top 80%",
-				  end: "bottom 50%+=100px",
-				  onEnter: function() { animateFrom(elem) }, 
-				});
-			}
-		  
-		});
-
-  });
-});
-
-onUnmounted(() => {
-  ctx.revert(); // <- revert your animation when it unmounts
-});
+const services = [
+  {
+    icon: "wand-magic-sparkles",
+    title: "UI/UX Design",
+    text: "De la conceptualisation à la réalisation, je vous accompagne dans la création d'interfaces esthétiques et fonctionnelles, conçues pour offrir une expérience utilisateur exceptionnelle.",
+  },
+  {
+    icon: "code",
+    title: "Développement d'applications web",
+    text: "Que vous cherchiez à optimiser vos processus internes, à améliorer l'engagement client ou à lancer une plateforme innovante, je transforme vos idées en solutions numériques performantes et sécurisées.",
+  },
+  {
+    icon: "thumbs-up",
+    title: "Community management",
+    text: "Je vous aide à développer votre présence en ligne à travers des stratégies de communication authentiques et personnalisées.",
+  },
+  {
+    icon: "file-invoice",
+    title: "Gestion de projets",
+    text: "Je vous accompagne dans l'analyse de vos besoins et dans la rédaction de cahiers des charges fonctionnels et techniques.",
+  },
+];
 </script>
 
 <template>
-  <section
-    id="services"
-    class="flex flex-col gap-4 relative w-full bg-gray-50 z-20 py-8 md:pt-16 min-h-[90vh]"
-  >
-    <div class="px-6 md:px-32 w-full mx-auto pb-16 relative text-center">
-      <div class="py-12 max-w-xl mx-auto">
-        <h3 class="text-4xl mb-8">Services</h3>
-
-        <p class="text-gray-500 font-sans">
-          Quelque soit votre problématique, ensemble nous travaillerons à trouver des
+  <section id="services" class="relative w-full bg-primary-100 py-24 sm:py-32">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-2xl text-center">
+        <span class="section-eyebrow !text-primary-600">Ce que je propose</span>
+        <h2 class="section-title text-primary-950">Services</h2>
+        <p class="mt-5 text-lg leading-relaxed text-primary-900">
+          Quelle que soit votre problématique, nous travaillerons ensemble à trouver des
           solutions innovantes pour répondre à vos besoins.
         </p>
       </div>
-      <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-16">
-        <div class="box rounded bg-primary-200 flex-1 p-4 pt-12 gs_reveal_fromLeft w-full">
-          <fa
-            class="text-primary-500 w-16 h-16 rounded-full mb-8"
-            icon="wand-magic-sparkles"
-          />
-          <h3 class="text-2xl mb-4 text-primary-500 font-semibold">UI/UX Design</h3>
-          <p class="text-gray-500 font-sans">
-            De la conceptualisation à la réalisation, je vous accompagne dans la création
-            d'interfaces esthétiques et fonctionnelles, conçues pour offrir une expérience
-            utilisateur exceptionnelle
-          </p>
-        </div>
-        <div class="box rounded bg-primary-200 flex-1 p-4 pt-12 gs_reveal_fromLeft">
-          <fa class="text-primary-500 w-16 h-16 rounded-full mb-8" icon="code" />
-          <h3 class="text-2xl mb-4 text-primary-500 font-semibold">
-            Développement d'application Web
+
+      <div class="mt-16 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <article
+          v-for="(service, i) in services"
+          :key="service.title"
+          class="group relative flex flex-col overflow-hidden rounded-2xl border-t-4 border-secondary bg-white p-8 shadow-lg shadow-primary-900/10 transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-900/20"
+        >
+          <span class="absolute right-6 top-5 font-display text-4xl font-semibold text-primary-100">0{{ i + 1 }}</span>
+          <div class="relative flex h-16 w-16 items-center justify-center rounded-xl bg-primary-950 text-secondary shadow-md">
+            <fa :icon="service.icon" class="h-7 w-7" />
+          </div>
+          <h3 class="mt-6 font-display text-2xl font-medium tracking-wide text-primary-950">
+            {{ service.title }}
           </h3>
-          <p class="text-gray-500 font-sans">
-            Que vous cherchiez à optimiser vos processus internes, à améliorer
-            l'engagement client ou à lancer une plateforme innovante, je m'engage à
-            transformer vos idées en solutions numériques performantes et sécurisées.
-          </p>
-        </div>
-        <div class="box rounded bg-primary-200 flex-1 p-4 pt-12 gs_reveal_fromRight">
-          <fa class="text-primary-500 w-16 h-16 rounded-full mb-8" icon="thumbs-up" />
-          <h3 class="text-2xl mb-4 text-primary-500 font-semibold">Community manager</h3>
-          <p class="text-gray-500 font-sans">
-            Par mon expertise, je vous aide à développer votre présence en ligne à travers
-            des stratégies de communication authentiques et personnalisées
-          </p>
-        </div>
-        <div class="box rounded bg-primary-200 flex-1 p-4 pt-12 gs_reveal_fromRight">
-          <fa class="text-primary-500 w-16 h-16 rounded-full mb-8" icon="file-invoice" />
-          <h3 class="text-2xl mb-4 text-primary-500 font-semibold">Gestion de projets</h3>
-          <p class="text-gray-500 font-sans">
-            Je vous accompagne dans l'analyse de vos besoins et dans la rédaction de
-            cahier des charges et/ou techniques
-          </p>
-        </div>
+          <span class="mt-3 h-0.5 w-10 bg-secondary transition-all duration-300 group-hover:w-16" aria-hidden="true"></span>
+          <p class="mt-4 leading-relaxed text-gray-700">{{ service.text }}</p>
+        </article>
       </div>
     </div>
   </section>
