@@ -6,6 +6,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['Oswald', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
       colors:{
         primary: {
           '50': '#f4f7fb',
@@ -23,7 +27,8 @@ module.exports = {
         secondary: '#d8bd73',
       },
       animation: {
-        'infinite-scroll': 'infinite-scroll 25s linear infinite',
+        'infinite-scroll': 'infinite-scroll 35s linear infinite',
+        'bounce-slow': 'bounce 2.5s infinite',
       },
       keyframes: {
         'infinite-scroll': {
